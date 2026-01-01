@@ -374,7 +374,7 @@ export default function VehiclesPage() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-1 text-sm">
                         <Gauge className="h-4 w-4 text-gray-400" />
-                        <span className={vehicle.currentSpeed > 0 ? 'text-blue-600 font-medium' : 'text-gray-500'}>
+                        <span className={(vehicle.currentSpeed ?? 0) > 0 ? 'text-blue-600 font-medium' : 'text-gray-500'}>
                           {vehicle.currentSpeed || 0} km/h
                         </span>
                       </div>

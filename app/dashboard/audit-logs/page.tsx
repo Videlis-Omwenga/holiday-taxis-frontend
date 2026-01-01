@@ -76,7 +76,6 @@ export default function AuditLogsPage() {
       setLogs(data.logs)
       setTotal(data.total)
     } catch (error) {
-      console.error('Error fetching audit logs:', error)
       toast.error('Failed to load audit logs')
     } finally {
       setLoading(false)
@@ -99,7 +98,7 @@ export default function AuditLogsPage() {
         setStats(data)
       }
     } catch (error) {
-      console.error('Error fetching stats:', error)
+      // Silently fail for stats - not critical
     }
   }
 

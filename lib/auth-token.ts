@@ -77,6 +77,7 @@ export function getUserFromToken(token: string): User | null {
  * Store token in localStorage
  */
 export function setToken(token: string): void {
+  if (typeof window === 'undefined') return
   localStorage.setItem(TOKEN_KEY, token)
 
   // Clean up old separate storage items
@@ -88,6 +89,7 @@ export function setToken(token: string): void {
  * Get token from localStorage
  */
 export function getToken(): string | null {
+  if (typeof window === 'undefined') return null
   return localStorage.getItem(TOKEN_KEY)
 }
 
@@ -117,6 +119,7 @@ export function getUser(): User | null {
  * Clear token from localStorage
  */
 export function clearToken(): void {
+  if (typeof window === 'undefined') return
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem('taxisUser')
   localStorage.removeItem('tokenExpiry')
