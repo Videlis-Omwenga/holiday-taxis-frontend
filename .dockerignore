@@ -54,3 +54,4 @@ docker-compose*.yml
 README.md
 INTEGRATION_GUIDE.md
 QUICK_START.md
+DEPLOYMENT.md
