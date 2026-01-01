@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Frontend Next.js Application (Development)
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: holiday-taxis-frontend-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - holiday-taxis-network
+    command: npm run dev
+
+networks:
+  holiday-taxis-network:
+    driver: bridge
