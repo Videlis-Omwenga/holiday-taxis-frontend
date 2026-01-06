@@ -55,6 +55,25 @@ The system uses PostgreSQL with Prisma ORM. Key tables:
 - Existing NestJS backend running (from `wialon-holidaytaxis-integration`)
 - Wialon API access
 - HolidayTaxis API credentials
+- Docker and Docker Compose (optional, for containerized deployment)
+
+### Quick Start
+
+**🚀 Fast Setup (5 minutes):**
+
+```bash
+# 1. Clone and install
+npm install
+
+# 2. Setup environment variables
+cp .env.template .env.local
+# Edit .env.local with your backend URL
+
+# 3. Run the app
+npm run dev
+```
+
+For detailed environment setup, see [ENV_QUICKSTART.md](./ENV_QUICKSTART.md)
 
 ### Step 1: Install Dependencies
 
@@ -63,7 +82,55 @@ cd /home/videlis/Desktop/taxi-integration
 npm install
 ```
 
-### Step 2: Configure Database
+### Step 2: Configure Environment Variables
+
+The application uses environment variables for all configuration. **All hard-coded values (ports, URLs, API keys) are now configured via .env files.**
+
+**Option A: Local Development (Recommended)**
+```bash
+# Copy the template
+cp .env.template .env.local
+
+# Edit with your values
+nano .env.local
+```
+
+**Option B: Docker Development**
+```bash
+# Copy for Docker
+cp .env.template .env
+
+# Edit for Docker networking
+nano .env
+```
+
+**Minimum Required Configuration:**
+```env
+# Your backend API URL (REQUIRED)
+NEXT_PUBLIC_BACKEND_URL=http://localhost:9000
+
+# Optional but recommended
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_key_here
+WIALON_TOKEN=your_token_here
+HOLIDAYTAXIS_API_KEY=your_key_here
+```
+
+**📚 For complete environment variable documentation:**
+- Quick Start: [ENV_QUICKSTART.md](./ENV_QUICKSTART.md) (30-second setup)
+- Full Reference: [ENV_CONFIGURATION.md](./ENV_CONFIGURATION.md) (all variables explained)
+- Examples: Check `.env.example` and `.env.production.example`
+
+**Common Environment Variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `FRONTEND_PORT` | `3000` | Port the application runs on |
+| `HOST_PORT` | `3000` | External port on your machine |
+| `NEXT_PUBLIC_BACKEND_URL` | `http://localhost:9000` | Backend API URL |
+| `NODE_ENV` | `development` | Environment mode |
+| `DOCKER_NETWORK` | `holiday-taxis-network` | Docker network name |
+
+### Step 3: Configure Database
 
 1. Create a PostgreSQL database:
 
@@ -71,20 +138,14 @@ npm install
 CREATE DATABASE taxi_integration;
 ```
 
-2. Copy `.env.example` to `.env`:
-
-```bash
-cp .env.example .env
-```
-
-3. Update `.env` with your database connection:
+2. Update `.env.local` with your database connection:
 
 ```env
 DATABASE_URL="postgresql://username:password@localhost:5432/taxi_integration"
-NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
+NEXT_PUBLIC_BACKEND_URL="http://localhost:9000"
 ```
 
-### Step 3: Run Database Migrations
+### Step 4: Run Database Migrations
 
 ```bash
 npx prisma generate
@@ -96,15 +157,39 @@ This will:
 - Create all database tables
 - Set up enums and relationships
 
-### Step 4: Start the Application
+### Step 5: Start the Application
+
+**Local Development:**
 
 ```bash
 npm run dev
 ```
 
-The application will run on [http://localhost:3001](http://localhost:3001)
+**Docker Development:**
+```bash
+# Quick start
+npm run docker:dev
 
-### Step 5: Sync Wialon Data
+# Or with custom port
+HOST_PORT=3001 npm run docker:dev
+
+# Stop
+npm run docker:dev:down
+```
+
+**Docker Production:**
+```bash
+npm run docker:prod
+```
+
+The application will run on `http://localhost:3000` (or your configured `HOST_PORT`)
+
+**🐳 For Docker-specific documentation:**
+- Quick Start: [DOCKER_QUICKSTART.md](./DOCKER_QUICKSTART.md)
+- Full Guide: [DOCKER_README.md](./DOCKER_README.md)
+- Deployment: [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+### Step 6: Sync Wialon Data
 
 1. Ensure your NestJS backend is running at `http://localhost:3000`
 2. Open the dashboard
