@@ -1,19 +1,27 @@
-version: '3.8'
-
 services:
   # Frontend Next.js Application (Development)
   frontend-dev:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: holiday-taxis-frontend-dev
+      args:
+        - FRONTEND_PORT=${FRONTEND_PORT:-3000}
+    container_name: ${CONTAINER_NAME_DEV:-holiday-taxis-frontend-dev}
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "${HOST_PORT:-3000}:${FRONTEND_PORT:-3000}"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV:-development}
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
-      - WATCHPACK_POLLING=true
+      - NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL:-http://localhost:9000}
+      - WATCHPACK_POLLING=${WATCHPACK_POLLING:-true}
+      - NEXT_TELEMETRY_DISABLED=${NEXT_TELEMETRY_DISABLED:-1}
+      - PORT=${FRONTEND_PORT:-3000}
+      - WIALON_API_URL=${WIALON_API_URL}
+      - WIALON_TOKEN=${WIALON_TOKEN}
+      - HOLIDAYTAXIS_API_URL=${HOLIDAYTAXIS_API_URL}
+      - HOLIDAYTAXIS_API_KEY=${HOLIDAYTAXIS_API_KEY}
+      - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
     volumes:
       - .:/app
       - /app/node_modules

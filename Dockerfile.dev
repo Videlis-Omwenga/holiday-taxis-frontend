@@ -16,8 +16,11 @@ RUN npm install --legacy-peer-deps
 # Copy application files
 COPY . .
 
-# Expose port
-EXPOSE 3000
+# Accept build arguments for port configuration
+ARG FRONTEND_PORT=3000
+
+# Expose port (using ARG for build-time configuration)
+EXPOSE ${FRONTEND_PORT}
 
 # Start development server with hot reload
 CMD ["npm", "run", "dev"]

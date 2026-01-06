@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Set environment variable for build
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=${NEXT_TELEMETRY_DISABLED:-1}
 
 # Build the application
 RUN npm run build
@@ -29,8 +29,16 @@ RUN npm run build
 FROM node:18-alpine AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+# Install wget for healthcheck
+RUN apk add --no-cache wget
+
+# Accept build arguments for port configuration
+ARG FRONTEND_PORT=3000
+
+ENV NODE_ENV=${NODE_ENV:-production}
+ENV NEXT_TELEMETRY_DISABLED=${NEXT_TELEMETRY_DISABLED:-1}
+ENV PORT=${FRONTEND_PORT}
+ENV HOSTNAME="0.0.0.0"
 
 # Create a non-root user
 RUN addgroup --system --gid 1001 nodejs
@@ -47,11 +55,8 @@ RUN chown -R nextjs:nodejs /app
 # Switch to non-root user
 USER nextjs
 
-# Expose port
-EXPOSE 3000
-
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+# Expose port (using ARG for build-time configuration)
+EXPOSE ${FRONTEND_PORT}
 
 # Start the application
 CMD ["node", "server.js"]
