@@ -6,6 +6,7 @@ import { apiClient } from "@/lib/api-client";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import EditBookingModal from "./EditBookingModal";
+import CreateBookingModal from "./CreateBookingModal";
 import {
   Calendar,
   User,
@@ -24,6 +25,7 @@ import {
   AlertTriangle,
   Info,
   CheckCircle,
+  Plus,
 } from "lucide-react";
 import { format } from "date-fns";
 import BookingStatusBadge from "./BookingStatusBadge";
@@ -41,6 +43,7 @@ export default function BookingsList({
 }: BookingsListProps) {
   const [autoAllocating, setAutoAllocating] = useState<string | null>(null);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showAutoAllocateConfirm, setShowAutoAllocateConfirm] = useState(false);
@@ -191,22 +194,22 @@ export default function BookingsList({
         className="fade-in"
       >
         <Modal.Header
-          className="border-b border-gray-200 px-6 py-4"
+          className="bg-light border-0 pb-3"
           closeButton={!deletingId}
           onHide={() => !deletingId && setShowDeleteConfirm(false)}
           closeVariant={deletingId ? "white" : undefined}
           closeLabel="Close"
         >
           <Modal.Title className="d-flex align-items-center gap-3 text-gray-800">
-            <div className="bg-red-100 p-2 rounded-full">
+            <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
               <AlertTriangle
-                className="h-5 w-5 text-red-600"
+                className="h-4 w-4 text-red-600"
                 strokeWidth={2.5}
               />
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-0">Delete Booking</h4>
-              <p className="text-sm text-gray-500 mb-0 mt-1">
+              <h4 className="h5 mb-0 font-semibold text-slate-800">Delete Booking</h4>
+              <p className="text-xs text-slate-600 mb-0 mt-1">
                 This action cannot be undone
               </p>
             </div>
@@ -235,12 +238,12 @@ export default function BookingsList({
             </div>
           )}
         </Modal.Body>
-        <Modal.Footer className="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg">
+        <Modal.Footer className="bg-gray-50 px-6 py-4 border-t border-gray-200">
           <button
             type="button"
             onClick={() => setShowDeleteConfirm(false)}
             disabled={!!deletingId}
-            className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
+            className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm ${
               deletingId
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                 : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
@@ -252,7 +255,7 @@ export default function BookingsList({
             type="button"
             onClick={handleDelete}
             disabled={!!deletingId}
-            className={`px-6 py-2.5 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors ${
+            className={`px-6 py-2.5 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors shadow-sm ${
               deletingId
                 ? "bg-red-400 text-white cursor-wait"
                 : "bg-red-600 text-white hover:bg-red-700"
@@ -303,19 +306,19 @@ export default function BookingsList({
         className="fade-in"
       >
         <Modal.Header
-          className="border-b border-gray-200 px-6 py-4"
+          className="bg-light border-0 pb-3"
           closeButton
           closeLabel="Close"
         >
           <Modal.Title className="d-flex align-items-center gap-3 text-gray-800">
-            <div className="bg-blue-100 p-2 rounded-full">
-              <UserPlus className="h-5 w-5 text-blue-600" strokeWidth={2.5} />
+            <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+              <UserPlus className="h-4 w-4 text-blue-600" strokeWidth={2.5} />
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-0">
+              <h4 className="h5 mb-0 font-semibold text-slate-800">
                 Manual Vehicle Allocation
               </h4>
-              <p className="text-sm text-gray-500 mb-0 mt-1">
+              <p className="text-xs text-slate-600 mb-0 mt-1">
                 Select a vehicle and driver for this booking
               </p>
             </div>
@@ -667,7 +670,7 @@ export default function BookingsList({
             </div>
           </div>
         </Modal.Body>
-        <Modal.Footer className="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg">
+        <Modal.Footer className="bg-gray-50 px-6 py-4 border-t border-gray-200">
           <button
             type="button"
             onClick={() => {
@@ -677,7 +680,7 @@ export default function BookingsList({
               setSelectedDriverId(null);
             }}
             disabled={manualAllocating}
-            className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
+            className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm ${
               manualAllocating
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                 : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
@@ -691,7 +694,7 @@ export default function BookingsList({
             disabled={
               !selectedVehicleId || !selectedDriverId || manualAllocating
             }
-            className={`px-6 py-2.5 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors ${
+            className={`px-6 py-2.5 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors shadow-sm ${
               !selectedVehicleId || !selectedDriverId || manualAllocating
                 ? "bg-blue-400 text-white cursor-not-allowed opacity-50"
                 : "bg-blue-600 text-white hover:bg-blue-700"
@@ -739,21 +742,21 @@ export default function BookingsList({
         className="fade-in"
       >
         <Modal.Header
-          className="border-b border-gray-200 px-6 py-4"
+          className="bg-light border-0 pb-3"
           closeButton={!autoAllocating}
           onHide={() => !autoAllocating && setShowAutoAllocateConfirm(false)}
           closeVariant={autoAllocating ? "white" : undefined}
           closeLabel="Close"
         >
           <Modal.Title className="d-flex align-items-center gap-3 text-gray-800">
-            <div className="bg-yellow-100 p-2 rounded-full">
-              <Zap className="h-5 w-5 text-yellow-600" strokeWidth={2.5} />
+            <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+              <Zap className="h-4 w-4 text-yellow-600" strokeWidth={2.5} />
             </div>
             <div>
-              <h4 className="text-lg font-semibold mb-0">
+              <h4 className="h5 mb-0 font-semibold text-slate-800">
                 Auto-allocate Booking
               </h4>
-              <p className="text-sm text-gray-500 mb-0 mt-1">
+              <p className="text-xs text-slate-600 mb-0 mt-1">
                 Assign the nearest available vehicle and driver
               </p>
             </div>
@@ -786,12 +789,12 @@ export default function BookingsList({
             </div>
           )}
         </Modal.Body>
-        <Modal.Footer className="bg-gray-50 px-6 py-4 border-t border-gray-200 rounded-b-lg">
+        <Modal.Footer className="bg-gray-50 px-6 py-4 border-t border-gray-200">
           <button
             type="button"
             onClick={() => setShowAutoAllocateConfirm(false)}
             disabled={!!autoAllocating}
-            className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-colors ${
+            className={`px-4 py-2.5 rounded-lg font-medium text-sm transition-colors shadow-sm ${
               autoAllocating
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
                 : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
@@ -851,13 +854,22 @@ export default function BookingsList({
               {bookings.length} booking{bookings.length !== 1 ? "s" : ""}
             </p>
           </div>
-          <button
-            onClick={() => setShowImportModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
-          >
-            <Upload className="h-4 w-4" />
-            Import
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            >
+              <Plus className="h-4 w-4" />
+              New Booking
+            </button>
+            <button
+              onClick={() => setShowImportModal(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+            >
+              <Upload className="h-4 w-4" />
+              Import
+            </button>
+          </div>
         </div>
 
         {bookings.length === 0 ? (
@@ -869,13 +881,22 @@ export default function BookingsList({
             <p className="text-gray-600 mb-4">
               Get started by creating a new booking or importing from CSV.
             </p>
-            <button
-              onClick={() => setShowImportModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              <Upload className="h-4 w-4" />
-              Import Bookings
-            </button>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              >
+                <Plus className="h-4 w-4" />
+                New Booking
+              </button>
+              <button
+                onClick={() => setShowImportModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                <Upload className="h-4 w-4" />
+                Import Bookings
+              </button>
+            </div>
           </div>
         ) : (
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
@@ -1061,6 +1082,14 @@ export default function BookingsList({
           </div>
         )}
       </div>
+
+      <CreateBookingModal
+        show={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={() => {
+          onRefresh();
+        }}
+      />
 
       <CSVImportModal
         isOpen={showImportModal}

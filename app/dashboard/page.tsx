@@ -42,8 +42,8 @@ export default function DashboardPage() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
   // Sorting states
-  const [sortField, setSortField] = useState<SortField>('pickupDateTime')
-  const [sortOrder, setSortOrder] = useState<SortOrder>('asc')
+  const [sortField, setSortField] = useState<SortField>('createdAt')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
 
   useEffect(() => {
     fetchBookings()

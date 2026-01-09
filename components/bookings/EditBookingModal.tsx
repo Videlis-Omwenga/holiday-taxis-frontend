@@ -130,16 +130,16 @@ export default function EditBookingModal({
 
   return (
     <Modal show={show} onHide={onClose} size="xl" centered className="fade-in">
-      <div className="relative bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-2xl overflow-hidden border border-gray-200">
-        {/* Header with Gradient */}
-        <div className="sticky top-0 z-20 bg-gradient-to-r from-gainsboro-600 to-silver-700 px-6 py-4 flex items-center justify-between shadow-lg">
+      <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        {/* Header */}
+        <div className="sticky top-0 z-20 bg-light px-6 py-4 flex items-center justify-between border-b border-gray-200">
           <div className="flex items-center space-x-3">
-            <div className="bg-white/20 backdrop-blur-sm p-2 rounded-lg">
-              <FileText className="h-5 w-5 text-primary-500" />
+            <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+              <FileText className="h-4 w-4 text-blue-600" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-primary">Edit Booking</h2>
-              <p className="text-xs text-dark-600">
+              <h2 className="h5 mb-0 font-semibold text-slate-800">Edit Booking</h2>
+              <p className="text-xs text-slate-600 mt-1">
                 Update booking details for {booking.passengerName}
               </p>
             </div>
@@ -147,7 +147,7 @@ export default function EditBookingModal({
           <button
             onClick={onClose}
             disabled={isSaving}
-            className="p-2 rounded-lg hover:bg-white/20 text-white transition-all duration-200 disabled:opacity-50"
+            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-all duration-200 disabled:opacity-50"
           >
             <X className="h-5 w-5" />
           </button>
@@ -161,10 +161,10 @@ export default function EditBookingModal({
           {/* Passenger Information Card */}
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <div className="bg-blue-100 p-2 rounded-lg">
+              <div className="bg-blue-50 p-2 rounded-lg border border-blue-100">
                 <User className="h-4 w-4 text-blue-600" />
               </div>
-              <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-0">
                 Passenger Information
               </h3>
             </div>
@@ -306,10 +306,10 @@ export default function EditBookingModal({
           {/* Trip Details Card */}
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <div className="bg-green-100 p-2 rounded-lg">
+              <div className="bg-green-50 p-2 rounded-lg border border-green-100">
                 <MapPin className="h-4 w-4 text-green-600" />
               </div>
-              <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-0">
                 Trip Details
               </h3>
             </div>
@@ -388,10 +388,10 @@ export default function EditBookingModal({
           {/* Booking Details Card */}
           <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
-              <div className="bg-purple-100 p-2 rounded-lg">
+              <div className="bg-purple-50 p-2 rounded-lg border border-purple-100">
                 <Calendar className="h-4 w-4 text-purple-600" />
               </div>
-              <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
+              <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-0">
                 Booking Details
               </h3>
             </div>
@@ -504,12 +504,12 @@ export default function EditBookingModal({
         </form>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex justify-end gap-3 shadow-lg">
+        <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex justify-end gap-3 shadow-sm">
           <button
             type="button"
             onClick={onClose}
             disabled={isSaving}
-            className="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-5 py-2.5 text-sm font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
           >
             Cancel
           </button>
@@ -517,7 +517,7 @@ export default function EditBookingModal({
             type="submit"
             onClick={handleSubmit}
             disabled={isSaving}
-            className="px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-lg hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-md hover:shadow-lg"
+            className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-sm"
           >
             {isSaving ? (
               <>

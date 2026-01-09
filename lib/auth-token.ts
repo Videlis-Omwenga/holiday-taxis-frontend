@@ -74,11 +74,20 @@ export function getUserFromToken(token: string): User | null {
 }
 
 /**
- * Store token in localStorage
+ * Store token in localStorage AND cookies
  */
 export function setToken(token: string): void {
   if (typeof window === 'undefined') return
+  
+  // Store in localStorage for client-side access
   localStorage.setItem(TOKEN_KEY, token)
+
+  // Store in cookies for middleware/SSR access
+  // Get expiry from token
+  const payload = decodeToken(token)
+  const expiryDate = payload ? new Date(payload.exp * 1000) : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  
+  document.cookie = `token=${token}; path=/; expires=${expiryDate.toUTCString()}; SameSite=Lax`
 
   // Clean up old separate storage items
   localStorage.removeItem('taxisUser')
@@ -116,13 +125,18 @@ export function getUser(): User | null {
 }
 
 /**
- * Clear token from localStorage
+ * Clear token from localStorage AND cookies
  */
 export function clearToken(): void {
   if (typeof window === 'undefined') return
+  
+  // Clear from localStorage
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem('taxisUser')
   localStorage.removeItem('tokenExpiry')
+  
+  // Clear from cookies
+  document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 }
 
 /**

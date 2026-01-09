@@ -63,9 +63,10 @@ export default function CSVImportModal({ isOpen, onClose, onSuccess }: CSVImport
   }
 
   const downloadTemplate = () => {
-    const csvContent = `passengerName,passengerPhone,passengerEmail,numberOfPassengers,numberOfLuggage,pickupLocation,pickupLatitude,pickupLongitude,pickupDateTime,dropoffLocation,dropoffLatitude,dropoffLongitude,bookingType,flightNumber,clientCompany
-John Doe,+1234567890,john@example.com,2,3,Airport Terminal 1,51.4700,-0.4543,2025-11-25T14:30:00,Hotel Plaza,51.5074,-0.1278,airport_to_hotel,BA123,ABC Corp
-Jane Smith,+9876543210,jane@example.com,1,1,Hotel Central,51.5074,-0.1278,2025-11-26T09:00:00,Airport Terminal 2,51.4700,-0.4543,hotel_to_airport,EK456,XYZ Ltd`
+    const csvContent = `passengerName,passengerPhone,numberOfPassengers,pickupLocation,pickupDateTime,dropoffLocation,flightNumber
+John Doe,+1234567890,2,Airport Terminal 1,2026-01-25T14:30:00,Hotel Plaza,BA123
+Jane Smith,+9876543210,1,Hotel Central,2026-01-26T09:00:00,Airport Terminal 2,EK456
+Michael Brown,+447700900123,4,Heathrow Airport T5,2026-01-27T16:00:00,Hilton London Paddington,LH789`
 
     const blob = new Blob([csvContent], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
@@ -79,19 +80,24 @@ Jane Smith,+9876543210,jane@example.com,1,1,Hotel Central,51.5074,-0.1278,2025-1
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b px-6 py-4">
+        <div className="sticky top-0 bg-light border-b px-6 py-4">
           <div className="flex justify-between items-start">
-            <div>
-              <h3 className="text-xl font-bold text-gray-900">Import Bookings from CSV</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Upload a CSV file to import multiple bookings at once
-              </p>
+            <div className="flex items-center gap-3">
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                <Upload className="h-4 w-4 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="h5 mb-0 font-semibold text-gray-900">Import Bookings from CSV</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Upload a CSV file to import multiple bookings at once
+                </p>
+              </div>
             </div>
             <button
               onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 p-1"
             >
-              <X className="h-6 w-6" />
+              <X className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -100,9 +106,11 @@ Jane Smith,+9876543210,jane@example.com,1,1,Hotel Central,51.5074,-0.1278,2025-1
           {/* Download Template */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <FileText className="h-5 w-5 text-blue-600 mt-0.5" />
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-blue-100">
+                <FileText className="h-4 w-4 text-blue-600" />
+              </div>
               <div className="flex-1">
-                <h4 className="font-medium text-blue-900 mb-1">Need a template?</h4>
+                <h4 className="font-semibold text-blue-900 mb-1 text-sm">Need a template?</h4>
                 <p className="text-sm text-blue-700 mb-3">
                   Download our CSV template with example data to get started
                 </p>
@@ -154,9 +162,11 @@ Jane Smith,+9876543210,jane@example.com,1,1,Hotel Central,51.5074,-0.1278,2025-1
           {/* Error Display */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+              <div className="bg-white p-2 rounded-lg shadow-sm border border-red-100">
+                <AlertCircle className="h-4 w-4 text-red-600" />
+              </div>
               <div className="flex-1">
-                <h4 className="font-medium text-red-900 mb-1">Import Failed</h4>
+                <h4 className="font-semibold text-red-900 mb-1 text-sm">Import Failed</h4>
                 <p className="text-sm text-red-700">{error}</p>
               </div>
             </div>
@@ -168,11 +178,15 @@ Jane Smith,+9876543210,jane@example.com,1,1,Hotel Central,51.5074,-0.1278,2025-1
               result.failed === 0 ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'
             }`}>
               <div className="flex items-start gap-3">
-                <CheckCircle className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
-                  result.failed === 0 ? 'text-green-600' : 'text-yellow-600'
-                }`} />
+                <div className={`bg-white p-2 rounded-lg shadow-sm ${
+                  result.failed === 0 ? 'border border-green-100' : 'border border-yellow-100'
+                }`}>
+                  <CheckCircle className={`h-4 w-4 ${
+                    result.failed === 0 ? 'text-green-600' : 'text-yellow-600'
+                  }`} />
+                </div>
                 <div className="flex-1">
-                  <h4 className={`font-medium mb-2 ${
+                  <h4 className={`font-semibold mb-2 text-sm ${
                     result.failed === 0 ? 'text-green-900' : 'text-yellow-900'
                   }`}>
                     Import Results
@@ -209,14 +223,14 @@ Jane Smith,+9876543210,jane@example.com,1,1,Hotel Central,51.5074,-0.1278,2025-1
           <div className="flex gap-3 justify-end pt-4 border-t">
             <button
               onClick={handleClose}
-              className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+              className="px-4 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg transition-colors font-medium shadow-sm"
             >
               Cancel
             </button>
             <button
               onClick={handleImport}
               disabled={!file || importing}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
             >
               {importing && (
                 <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
