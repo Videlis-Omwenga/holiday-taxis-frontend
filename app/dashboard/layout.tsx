@@ -20,10 +20,16 @@ export default function DashboardLayout({
   const [syncing, setSyncing] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, logout } = useAuth()
-  const [currentUser, setCurrentUser] = useState(getUser())
+  const [currentUser, setCurrentUser] = useState<any>(null)
   const [showTempPasswordBanner, setShowTempPasswordBanner] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState('')
   const [logsDropdownOpen, setLogsDropdownOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Hydration fix: only show user-dependent content after mount
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
     const usr = getUser()
@@ -210,7 +216,7 @@ export default function DashboardLayout({
                 <ul className="mt-1 ml-4 space-y-0.5">
                   {logsDropdownItems
                     .filter((item) => {
-                      if (item.adminOnly && !currentUser?.isAdmin) {
+                      if (item.adminOnly && (!isMounted || !currentUser?.isAdmin)) {
                         return false;
                       }
                       return true;
@@ -241,7 +247,7 @@ export default function DashboardLayout({
             </li>
 
             {/* Admin-Only: Users */}
-            {currentUser?.isAdmin && (
+            {isMounted && currentUser?.isAdmin && (
               <li>
                 <Link
                   href="/dashboard/users"
@@ -338,8 +344,8 @@ export default function DashboardLayout({
                   <button className="flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 hover:bg-white hover:shadow-lg">
                     {/* User Info */}
                     <div className="text-right hidden sm:block leading-none space-y-0">
-                      <p className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors leading-none mb-0">{user?.name || 'User'}</p>
-                      <p className="text-[11px] text-slate-500 leading-none mt-0">{user?.email || 'user@email.com'}</p>
+                      <p className="text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors leading-none mb-0">{user?.name || currentUser?.name || 'User'}</p>
+                      <p className="text-[11px] text-slate-500 leading-none mt-0">{user?.email || currentUser?.email || 'user@email.com'}</p>
                     </div>
 
                     {/* Avatar with enhanced styling */}
@@ -353,7 +359,7 @@ export default function DashboardLayout({
                       {/* Avatar */}
                       <div className="relative w-10 h-10 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg ring-2 ring-white group-hover:scale-105 transition-all duration-200">
                         <span className="relative z-10">
-                          {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'}
+                          {(user?.name || currentUser?.name)?.split(' ').map((n: string) => n[0]).join('').toUpperCase() || 'U'}
                         </span>
                       </div>
 

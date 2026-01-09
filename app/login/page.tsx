@@ -36,8 +36,11 @@ export default function LoginPage() {
       // Store token (user info is decoded from token)
       setToken(data.access_token)
 
-      // Redirect to dashboard
-      router.push('/dashboard')
+      // Small delay to ensure cookie is set before redirect
+      setTimeout(() => {
+        // Force page reload to re-initialize AuthProvider with new token
+        window.location.href = '/dashboard'
+      }, 100)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login')
     } finally {
