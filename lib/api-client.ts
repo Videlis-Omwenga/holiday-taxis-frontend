@@ -196,6 +196,24 @@ class ApiClient {
   async healthCheck() {
     return this.get('/integration/health')
   }
+
+  // Wialon sync endpoints
+  async syncWialonVehicles() {
+    return this.post('/wialon/sync-vehicles')
+  }
+
+  async syncWialonDrivers() {
+    return this.post('/wialon/sync-drivers')
+  }
+
+  // Wialon debug endpoints
+  async getWialonDebugResources() {
+    return this.get('/wialon/debug/resources')
+  }
+
+  async getWialonDrivers() {
+    return this.get('/wialon/drivers')
+  }
 }
 
 export const apiClient = new ApiClient()

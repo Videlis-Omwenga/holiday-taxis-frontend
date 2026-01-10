@@ -13,6 +13,7 @@ import {
   Calendar,
   Save,
   Plane,
+  Plus,
 } from "lucide-react";
 
 interface CreateBookingModalProps {
@@ -134,196 +135,263 @@ export default function CreateBookingModal({
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered size="lg">
-      <Modal.Header className="bg-light border-0 pb-3">
-        <Modal.Title className="d-flex align-items-center gap-2">
-          <div className="p-2 bg-white rounded-lg shadow-sm border border-gray-200">
-            <Calendar className="h-4 w-4 text-blue-600" />
+    <Modal show={show} onHide={handleClose} size="lg" centered className="fade-in">
+      <div className="relative bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+        {/* Header */}
+        <div className="sticky top-0 z-20 bg-light px-6 py-4 flex items-center justify-between border-b border-gray-200">
+          <div className="flex items-center space-x-3">
+            <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+              <Plus className="h-4 w-4 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="h5 mb-0 font-semibold text-slate-800">Create New Booking</h2>
+              <p className="text-xs text-slate-600 mt-1">
+                Add a new passenger booking to the system
+              </p>
+            </div>
           </div>
-          <span className="h5 mb-0 font-semibold text-slate-800">
-            Create New Booking
-          </span>
-        </Modal.Title>
-        <button
-          onClick={handleClose}
-          disabled={isCreating}
-          className="btn-close"
-          aria-label="Close"
-        />
-      </Modal.Header>
+          <button
+            onClick={handleClose}
+            disabled={isCreating}
+            className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition-all duration-200 disabled:opacity-50"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
 
-      <Modal.Body className="px-4 py-4">
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            {/* Passenger Name */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-slate-500" />
-                  Passenger Name <span className="text-red-500">*</span>
-                </div>
-              </label>
-              <input
-                type="text"
-                name="passengerName"
-                value={formData.passengerName}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter passenger name"
-                required
-                disabled={isCreating}
-              />
+        {/* Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto"
+        >
+          {/* Passenger Information Card */}
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+            <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
+              <div className="bg-blue-50 p-2 rounded-lg border border-blue-100">
+                <User className="h-4 w-4 text-blue-600" />
+              </div>
+              <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-0">
+                Passenger Information
+              </h3>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="passengerName"
+                  className="block text-xs font-semibold text-gray-700 mb-2"
+                >
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="passengerName"
+                  name="passengerName"
+                  value={formData.passengerName}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                  placeholder="Enter passenger name"
+                  required
+                  disabled={isCreating}
+                />
+              </div>
 
-            {/* Passenger Phone */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-slate-500" />
+              <div>
+                <label
+                  htmlFor="passengerPhone"
+                  className="block text-xs font-semibold text-gray-700 mb-2"
+                >
                   Phone Number
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <Phone className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="tel"
+                    id="passengerPhone"
+                    name="passengerPhone"
+                    value={formData.passengerPhone}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                    placeholder="+44 20 1234 5678"
+                    disabled={isCreating}
+                  />
                 </div>
-              </label>
-              <input
-                type="tel"
-                name="passengerPhone"
-                value={formData.passengerPhone}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="+44 20 1234 5678"
-                disabled={isCreating}
-              />
-            </div>
+              </div>
 
-            {/* Number of Passengers */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-slate-500" />
+              <div className="md:col-span-2">
+                <label
+                  htmlFor="numberOfPassengers"
+                  className="block text-xs font-semibold text-gray-700 mb-2"
+                >
                   Number of Passengers <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                    <Users className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="number"
+                    id="numberOfPassengers"
+                    name="numberOfPassengers"
+                    value={formData.numberOfPassengers}
+                    onChange={handleNumberChange}
+                    min="1"
+                    max="50"
+                    className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                    required
+                    disabled={isCreating}
+                  />
                 </div>
-              </label>
-              <input
-                type="number"
-                name="numberOfPassengers"
-                value={formData.numberOfPassengers}
-                onChange={handleNumberChange}
-                min="1"
-                max="50"
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-                disabled={isCreating}
-              />
+              </div>
             </div>
+          </div>
 
-            {/* Pickup Location */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-green-500" />
+          {/* Trip Details Card */}
+          <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+            <div className="flex items-center gap-2 mb-4 pb-3 border-b border-gray-200">
+              <div className="bg-green-50 p-2 rounded-lg border border-green-100">
+                <MapPin className="h-4 w-4 text-green-600" />
+              </div>
+              <h3 className="text-sm font-semibold text-gray-800 uppercase tracking-wide mb-0">
+                Trip Details
+              </h3>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="pickupLocation"
+                  className="block text-xs font-semibold text-gray-700 mb-2"
+                >
                   Pickup Location <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-green-500">
+                    <MapPin className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="text"
+                    id="pickupLocation"
+                    name="pickupLocation"
+                    value={formData.pickupLocation}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                    placeholder="e.g., Heathrow Airport Terminal 5"
+                    required
+                    disabled={isCreating}
+                  />
                 </div>
-              </label>
-              <input
-                type="text"
-                name="pickupLocation"
-                value={formData.pickupLocation}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., Heathrow Airport Terminal 5"
-                required
-                disabled={isCreating}
-              />
-            </div>
+              </div>
 
-            {/* Pickup Date & Time */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-slate-500" />
-                  Pickup Date & Time <span className="text-red-500">*</span>
-                </div>
-              </label>
-              <input
-                type="datetime-local"
-                name="pickupDateTime"
-                value={formData.pickupDateTime}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-                disabled={isCreating}
-              />
-            </div>
-
-            {/* Dropoff Location */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4 text-red-500" />
+              <div>
+                <label
+                  htmlFor="dropoffLocation"
+                  className="block text-xs font-semibold text-gray-700 mb-2"
+                >
                   Drop-off Location <span className="text-red-500">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-red-500">
+                    <MapPin className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="text"
+                    id="dropoffLocation"
+                    name="dropoffLocation"
+                    value={formData.dropoffLocation}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                    placeholder="e.g., Hilton London Paddington"
+                    required
+                    disabled={isCreating}
+                  />
                 </div>
-              </label>
-              <input
-                type="text"
-                name="dropoffLocation"
-                value={formData.dropoffLocation}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., Hilton London Paddington"
-                required
-                disabled={isCreating}
-              />
-            </div>
+              </div>
 
-            {/* Flight Number */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <div className="flex items-center gap-2">
-                  <Plane className="h-4 w-4 text-slate-500" />
-                  Flight Number
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="pickupDateTime"
+                    className="block text-xs font-semibold text-gray-700 mb-2"
+                  >
+                    Pickup Date & Time <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                      <Calendar className="h-4 w-4" />
+                    </div>
+                    <input
+                      type="datetime-local"
+                      id="pickupDateTime"
+                      name="pickupDateTime"
+                      value={formData.pickupDateTime}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                      required
+                      disabled={isCreating}
+                    />
+                  </div>
                 </div>
-              </label>
-              <input
-                type="text"
-                name="flightNumber"
-                value={formData.flightNumber}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., BA123"
-                disabled={isCreating}
-              />
+
+                <div>
+                  <label
+                    htmlFor="flightNumber"
+                    className="block text-xs font-semibold text-gray-700 mb-2"
+                  >
+                    Flight Number
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                      <Plane className="h-4 w-4" />
+                    </div>
+                    <input
+                      type="text"
+                      id="flightNumber"
+                      name="flightNumber"
+                      value={formData.flightNumber}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 hover:bg-white"
+                      placeholder="e.g., BA123"
+                      disabled={isCreating}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-3 mt-6 pt-4 border-t border-slate-200">
-            <button
-              type="button"
-              onClick={handleClose}
-              disabled={isCreating}
-              className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isCreating}
-              className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
-            >
-              {isCreating ? (
-                <>
-                  <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                  Creating...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4" />
-                  Create Booking
-                </>
-              )}
-            </button>
+          <div className="sticky bottom-0 bg-gray-50 px-6 py-4 border-t border-gray-200 -mx-6 -mb-6 rounded-b-xl">
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={handleClose}
+                disabled={isCreating}
+                className="flex-1 px-6 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-white transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isCreating}
+                className="flex-1 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+              >
+                {isCreating ? (
+                  <>
+                    <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                    <span>Creating...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4" />
+                    <span>Create Booking</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </form>
-      </Modal.Body>
+      </div>
     </Modal>
   );
 }

@@ -13,14 +13,26 @@ export async function POST(request: NextRequest) {
       headers.Authorization = authHeader
     }
 
-    // Call backend Wialon sync endpoint
-    const url = `${BACKEND_URL}/wialon/sync-vehicles`
-    const response = await axios.post(url, {}, { headers })
+    // Sync both vehicles and drivers from Wialon
+    const vehiclesUrl = `${BACKEND_URL}/wialon/sync-vehicles`
+    const driversUrl = `${BACKEND_URL}/wialon/sync-drivers`
+
+    // Run both syncs in parallel
+    const [vehiclesResponse, driversResponse] = await Promise.all([
+      axios.post(vehiclesUrl, {}, { headers }),
+      axios.post(driversUrl, {}, { headers })
+    ])
+
+    const vehiclesData = vehiclesResponse.data
+    const driversData = driversResponse.data
 
     return NextResponse.json({
       success: true,
-      message: 'Vehicles synced successfully',
-      data: response.data,
+      message: `Synced ${vehiclesData.created + vehiclesData.updated} vehicles and ${driversData.created + driversData.updated} drivers successfully`,
+      data: {
+        vehicles: vehiclesData,
+        drivers: driversData,
+      },
     })
   } catch (error: any) {
     return NextResponse.json(
@@ -40,19 +52,30 @@ export async function GET(request: NextRequest) {
       headers.Authorization = authHeader
     }
 
-    // Get vehicle count from backend
+    // Get vehicle and driver counts from backend
     const vehiclesUrl = `${BACKEND_URL}/vehicles`
-    const vehiclesResponse = await axios.get(vehiclesUrl, { headers })
+    const driversUrl = `${BACKEND_URL}/drivers`
+
+    const [vehiclesResponse, driversResponse] = await Promise.all([
+      axios.get(vehiclesUrl, { headers }),
+      axios.get(driversUrl, { headers })
+    ])
+
     const vehicles = vehiclesResponse.data
+    const drivers = driversResponse.data
 
     const totalVehicles = vehicles.length
     const onlineVehicles = vehicles.filter((v: any) => v.isOnline).length
+    const totalDrivers = drivers.length
+    const availableDrivers = drivers.filter((d: any) => d.status === 'available' && !d.isAllocated).length
 
     return NextResponse.json({
       success: true,
       data: {
         totalVehicles,
         onlineVehicles,
+        totalDrivers,
+        availableDrivers,
         lastSyncSuccess: true,
       },
     })

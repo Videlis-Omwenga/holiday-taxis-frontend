@@ -483,12 +483,20 @@ export default function BookingsList({
                               </td>
                               <td className="px-3 py-2.5 whitespace-nowrap">
                                 <div className="text-xs">
-                                  <div className="text-gray-900">
-                                    {vehicle.distance.toFixed(1)} km
-                                  </div>
-                                  <div className="text-gray-500">
-                                    {vehicle.eta} min
-                                  </div>
+                                  {vehicle.distance !== null && vehicle.distance !== undefined ? (
+                                    <>
+                                      <div className="text-gray-900">
+                                        {vehicle.distance.toFixed(1)} km
+                                      </div>
+                                      <div className="text-gray-500">
+                                        {vehicle.eta} min
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <span className="text-gray-400 italic">
+                                      N/A
+                                    </span>
+                                  )}
                                 </div>
                               </td>
                               <td className="px-3 py-2.5 whitespace-nowrap">
@@ -1050,26 +1058,34 @@ export default function BookingsList({
                                     <UserPlus size={12} />
                                     Manual
                                   </button>
+                                  {/* Edit and Delete buttons - only for pending bookings */}
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setEditingBooking(booking);
+                                    }}
+                                    className="px-2 py-1 bg-gray-600/10 text-gray-700 hover:bg-gray-600/20 text-xs font-medium rounded transition-colors flex items-center justify-center gap-1"
+                                  >
+                                    <Pencil size={12} />
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={(e) => handleDeleteClick(booking.id, e)}
+                                    disabled={deletingId === booking.id}
+                                    className="px-2 py-1 bg-red-600/10 text-red-700 hover:bg-red-600/20 text-xs font-medium rounded transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
+                                  >
+                                    <Trash2 size={12} />
+                                    {deletingId === booking.id ? "..." : "Delete"}
+                                  </button>
                                 </>
                               )}
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setEditingBooking(booking);
-                                }}
-                                className="px-2 py-1 bg-gray-600/10 text-gray-700 hover:bg-gray-600/20 text-xs font-medium rounded transition-colors flex items-center justify-center gap-1"
-                              >
-                                <Pencil size={12} />
-                                Edit
-                              </button>
-                              <button
-                                onClick={(e) => handleDeleteClick(booking.id, e)}
-                                disabled={deletingId === booking.id}
-                                className="px-2 py-1 bg-red-600/10 text-red-700 hover:bg-red-600/20 text-xs font-medium rounded transition-colors disabled:opacity-50 flex items-center justify-center gap-1"
-                              >
-                                <Trash2 size={12} />
-                                {deletingId === booking.id ? "..." : "Delete"}
-                              </button>
+                              {/* For allocated bookings, show info message instead of action buttons */}
+                              {booking.status === "allocated" && (
+                                <div className="flex items-center justify-center gap-2 py-2 text-blue-600">
+                                  <Info className="h-4 w-4" />
+                                  <span className="text-xs font-medium">Allocated</span>
+                                </div>
+                              )}
                             </>
                           )}
                         </div>

@@ -131,8 +131,8 @@ export interface ApiResponse<T> {
 
 // Vehicle suggestion for allocation
 export interface VehicleSuggestion extends Vehicle {
-  distance: number
-  eta: number
+  distance: number | null
+  eta: number | null
 }
 
 // CSV Import Result

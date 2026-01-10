@@ -138,7 +138,7 @@ export default function LoginPage() {
           {/* Footer Info */}
           <div className="mt-8 pt-6 border-t border-gray-200">
             <p className="text-sm text-center text-gray-500">
-              Default credentials: <span className="font-mono text-gray-700">admin@taxi.com</span> / <span className="font-mono text-gray-700">1234</span>
+              No account? <span className="font-mono text-gray-700">contact admin</span>
             </p>
           </div>
         </div>
